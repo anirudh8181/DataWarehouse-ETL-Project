@@ -15,7 +15,7 @@ GROUP BY cst_id
 HAVING COUNT(*) > 1 OR cst_id IS NULL;
 
 
--- read the duplcate data
+-- read the duplicate data
 
 SELECT * FROM 
 bronze.crm_cust_info
