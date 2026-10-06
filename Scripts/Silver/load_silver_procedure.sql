@@ -437,3 +437,222 @@ DELIMITER ;
 
 CALL load_silver();
 
+
+/*
+GET DIAGNOSTICS
+
+Now we get the actual error information.
+
+GET DIAGNOSTICS CONDITION 1
+    v_error_code = RETURNED_SQLSTATE,
+    v_error_message = MESSAGE_TEXT;
+
+This is extremely important.
+
+It tells MySQL:
+
+"Give me information about the error that just occurred."
+
+
+CONDITION 1
+means:
+Get information about the first error condition.
+
+For a normal SQL statement failure, this is typically the error we're interested in.
+
+
+
+5. RETURNED_SQLSTATE
+v_error_code = RETURNED_SQLSTATE
+
+This takes the SQLSTATE error code and stores it inside:
+
+v_error_code
+
+For example:
+
+42S02
+
+could indicate that a table or view wasn't found.
+
+So:
+
+RETURNED_SQLSTATE
+        ↓
+     42S02
+        ↓
+v_error_code
+
+
+6. MESSAGE_TEXT
+v_error_message = MESSAGE_TEXT;
+
+This gets the actual human-readable error message.
+
+For example:
+
+Table 'silver.crm_cust_info' doesn't exist
+
+So:
+
+MESSAGE_TEXT
+      ↓
+"Table 'silver.crm_cust_info' doesn't exist"
+      ↓
+v_error_message
+
+Now you have two pieces of information:
+
+v_error_code
+     ↓
+42S02
+
+v_error_message
+     ↓
+Table 'silver.crm_cust_info' doesn't exist
+
+
+
+7. First SELECT
+SELECT
+    '========================================' AS message;
+
+This simply prints a separator.
+
+Output:
+
+========================================
+
+It's only for making the error output easier to read.
+
+8. Print the failed step
+SELECT
+    CONCAT(
+        'ERROR in step: ',
+        v_step_name
+    ) AS message;
+
+Remember that earlier we have:
+
+SET v_step_name = 'CRM Customer - Insert Data';
+
+If that step fails, this produces:
+
+ERROR in step: CRM Customer - Insert Data
+Why is this useful?
+
+Your procedure contains many operations:
+
+CRM Customer
+    ↓
+CRM Product
+    ↓
+CRM Sales
+    ↓
+ERP Customer
+    ↓
+ERP Location
+
+If something fails, you want to know where.
+
+That's why we maintain:
+
+v_step_name
+
+
+9. Print SQLSTATE
+SELECT
+    CONCAT(
+        'SQLSTATE: ',
+        v_error_code
+    ) AS message;
+
+Suppose:
+
+v_error_code = '42S02'
+
+Then:
+
+SQLSTATE: 42S02
+
+is printed.
+This is useful for debugging because SQLSTATE codes provide standardized categories of SQL errors.
+
+10. Print the actual error
+SELECT
+    CONCAT(
+        'Error Message: ',
+        v_error_message
+    ) AS message;
+
+Suppose:
+
+v_error_message =
+Table 'silver.crm_cust_info' doesn't exist
+
+Then you get:
+
+Error Message: Table 'silver.crm_cust_info' doesn't exist
+
+11. Print your own failure message
+SELECT
+    'Silver loading FAILED.' AS message;
+
+This is just a clear message telling you:
+
+Silver loading FAILED.
+
+So the person running the procedure doesn't have to interpret the SQL error alone.
+
+12. Final separator
+SELECT
+    '========================================' AS message;
+
+Again, this is just formatting.
+
+You might see:
+
+========================================
+ERROR in step: CRM Product - Insert Data
+SQLSTATE: 42S02
+Error Message: Table 'silver.crm_prd_info' doesn't exist
+Silver loading FAILED.
+========================================
+13. RESIGNAL
+
+This is the most important part after the handler itself.
+
+RESIGNAL;
+
+RESIGNAL means:
+
+Send the original error back to the caller.
+
+This is important because otherwise you could catch the error, print your messages, and effectively hide the original SQL error.
+
+For example:
+SQL error
+   ↓
+Handler catches it
+   ↓
+Print custom error information
+   ↓
+RESIGNAL
+   ↓
+MySQL still reports the original error
+
+
+So you get both:
+
+Your useful logging
+ERROR in step: CRM Product - Insert Data
+SQLSTATE: 42S02
+Error Message: Table 'silver.crm_prd_info' doesn't exist
+Silver loading FAILED.
+And the original MySQL error
+
+The calling application/client still receives the SQL exception.
+
+This is especially useful in production because an ETL scheduler, application, or orchestration tool can detect that the procedure actually failed.
+*/
+
