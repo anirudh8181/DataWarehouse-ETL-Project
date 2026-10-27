@@ -18,7 +18,6 @@ SELECT
         WHEN UPPER(TRIM(prd_line)) = 'M' THEN 'Mountain'
         WHEN UPPER(TRIM(prd_line)) = 'R' THEN 'Road'
         WHEN UPPER(TRIM(prd_line)) = 'S' THEN 'Other Sales'
-        WHEN UPPER(TRIM(prd_line)) = 'S' THEN 'Other Sales'
         ELSE 'n/a' 
     END AS prd_line,    
     prd_start_dt,

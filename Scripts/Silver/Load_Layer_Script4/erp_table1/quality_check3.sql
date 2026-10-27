@@ -13,8 +13,8 @@ CASE WHEN bdate > CURDATE()  THEN NULL
      ELSE bdate
 END AS bdate,  
 CASE 
-     WHEN UPPER(TRIM(gen)) IN ('M' , 'MALE') THEN 'Female'
-     WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Male'
+     WHEN UPPER(TRIM(gen)) IN ('M' , 'MALE') THEN 'Male'
+     WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female'
      ELSE 'n/a'
 END AS gen     
 FROM bronze.erp_cust_az12;

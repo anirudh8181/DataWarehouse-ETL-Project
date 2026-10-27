@@ -6,6 +6,7 @@ FROM bronze.erp_cust_az12
 WHERE bdate < '1924-01-01' OR bdate > CURDATE();
 
 
+
 -- birth date transformation
 SELECT 
 CASE WHEN cid LIKE 'NAS%' THEN SUBSTRING(cid, 4 , LENGTH(cid))
@@ -24,4 +25,4 @@ FROM bronze.erp_cust_az12;
 SELECT DISTINCT
   bdate
 FROM silver.erp_cust_az12
-WHERE bdate < '1924-01-01' OR bdate >
+WHERE bdate < '1924-01-01' OR bdate > CURDATE();

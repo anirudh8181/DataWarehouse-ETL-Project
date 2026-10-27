@@ -1,6 +1,7 @@
 /*
 
-Data cardinality means how many unique values exist in a column, or how many records in one table relate to records in another table.
+Data cardinality means how many unique values exist in a column, or how many records 
+in one table relate to records in another table.
 
 In data engineering/database discussions, you’ll usually encounter it in two ways:
 
@@ -142,6 +143,7 @@ CASE WHEN cst_gndr = 'F' THEN 'FEMALE'
 END AS cst_gndr    
 FROM non_dup
 WHERE cst_id IS NOT NULL AND ranking = 1;
+
 
 -- if lowers case of f/m exists
 WITH non_dup AS (

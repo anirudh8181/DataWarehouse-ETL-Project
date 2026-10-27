@@ -24,7 +24,7 @@ REPLACE(cid, '-', '') AS cid,
 cntry
 FROM
 bronze.erp_loc_a101
-WHERE cid NOT IN (SELECT  cid FROM silver.crm_cust_info);
+WHERE cid NOT IN (SELECT  cst_id FROM silver.crm_cust_info);
 
 
 

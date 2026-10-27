@@ -18,6 +18,7 @@ NULLIF(sls_order_dt,0) AS sls_order_date
 FROM bronze.crm_sales_details
 WHERE LENGTH(sls_order_dt)!= 8 OR sls_order_dt > 20500101 OR sls_order_dt <  19000101;
 
+
 DESC crm_sales_details;
 
 -- let's handle the invalide dates
@@ -25,7 +26,8 @@ SELECT
 sls_ord_num,
 sls_prd_key,
 sls_cust_id,
-CASE WHEN  sls_order_dt = 0 OR LENGTH(sls_order_dt)!=8 THEN NULL
+CASE 
+      WHEN  sls_order_dt = 0 OR LENGTH(sls_order_dt)!=8 THEN NULL
       ELSE STR_TO_DATE(sls_order_dt, '%Y%m%d')
 END AS sls_order_dt,      
 sls_ship_dt,

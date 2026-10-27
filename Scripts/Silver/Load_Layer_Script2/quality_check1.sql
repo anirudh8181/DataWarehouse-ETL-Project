@@ -49,7 +49,7 @@ SELECT
     prd_end_dt
 FROM bronze.crm_prd_info;
 
--- cheecking non existint cat_id
+-- checking non existint cat_id
 SELECT
     prd_id,
     prd_key,
@@ -90,8 +90,11 @@ SELECT
     prd_start_dt,
     prd_end_dt
 FROM bronze.crm_prd_info
-WHERE SUBSTRING(prd_key, 7, LENGTH(prd_key)) NOT IN
-(SELECT sls_prd_key FROM bronze.crm_sales_details WHERE sls_prd_key LIKE 'FK');
+WHERE SUBSTRING(prd_key, 7, LENGTH(prd_key))  IN
+(SELECT sls_prd_key FROM 
+bronze.crm_sales_details 
+WHERE sls_prd_key LIKE 'FK'
+);
 
 
 SELECT

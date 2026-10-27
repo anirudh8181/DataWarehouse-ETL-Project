@@ -1,4 +1,4 @@
--- TRUNCATE TABLE silver.crm_cust_info;
+TRUNCATE TABLE silver.crm_cust_info;
 
 
 INSERT INTO silver.crm_cust_info

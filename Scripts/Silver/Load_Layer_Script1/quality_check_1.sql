@@ -21,7 +21,7 @@ SELECT * FROM
 bronze.crm_cust_info
 WHERE cst_id = 29466;
 
--- if deplicates found assign rankings to them and take the latest entry
+-- if duplicates found assign rankings to them and take the latest entry
 SELECT *, 
 ROW_NUMBER() OVER(PARTITION BY cst_id ORDER BY cst_create_date DESC) AS ranking
 FROM 
@@ -33,6 +33,7 @@ SELECT *,
 ROW_NUMBER() OVER(PARTITION BY cst_id ORDER BY cst_create_date DESC) AS ranking
 FROM 
 bronze.crm_cust_info;
+
 
 -- finding who are duplicates
 
@@ -54,6 +55,8 @@ bronze.crm_cust_info
 )
 SELECT * FROM non_dup
 WHERE cst_id AND ranking=1;
+
+
 
 
 

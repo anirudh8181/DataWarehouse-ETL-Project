@@ -7,7 +7,7 @@ FROM bronze.crm_prd_info
 WHERE prd_nm!= TRIM(prd_nm);
 
 -- check for negative numbers/ cost and NULLs
-SELECT prd_cost
+SELECT *
 FROM bronze.crm_prd_info
 WHERE prd_cost < 0 OR prd_cost IS NULL;
 

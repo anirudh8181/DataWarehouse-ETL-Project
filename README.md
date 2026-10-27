@@ -24,6 +24,8 @@ It is built entirely in **MySQL** and is designed as both a working data warehou
 
 ## 🏗️ Architecture
 
+![Data Architecture](DOCS/data_architecture.png)
+
 The warehouse follows the **Medallion Architecture**, with each layer serving a distinct purpose:
 
 ```text
@@ -44,6 +46,10 @@ The warehouse follows the **Medallion Architecture**, with each layer serving a 
 | 🥈 **Silver** | Cleansing, standardization, deduplication, type/format fixes | Cleaned CRM & ERP tables with consistent keys and formats |
 | 🥇 **Gold** | Business-ready, dimensional model | `dim_customers`, `dim_products`, `fact_sales` (Star Schema) |
 
+### 🔀 Data Flow (Lineage)
+
+![Data Flow](DOCS/readme/data_flow.svg)
+
 ### ⭐ Gold Layer — Star Schema
 
 ```text
@@ -52,6 +58,8 @@ The warehouse follows the **Medallion Architecture**, with each layer serving a 
                        │
    dim_products ── fact_sales
 ```
+
+![Star Schema](DOCS/readme/star_schema.svg)
 
 `fact_sales` sits at the center, surrounded by conformed dimension tables — optimized for fast, simple analytical queries.
 
@@ -106,6 +114,12 @@ SQL_DWH_Project/
 | ERP | Customer (AZ12) | CSV |
 | ERP | Location (A101) | CSV |
 | ERP | Product Category (G1V2) | CSV |
+
+### 🔗 Data Integration
+
+How the CRM and ERP tables relate to each other:
+
+![Data Integration](DOCS/readme/data_integration.svg)
 
 > Scope: latest snapshot only — historization/SCD tracking is intentionally out of scope.
 

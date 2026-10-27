@@ -19,4 +19,4 @@ bronze.erp_loc_a101;
 
 -- quality check 2
 SELECT 	DISTINCT cntry
-FROM bronze.erp_loc_a101;
+FROM silver.erp_loc_a101;
